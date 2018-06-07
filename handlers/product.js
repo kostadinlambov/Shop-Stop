@@ -1,11 +1,14 @@
+const Product = require('../models/Product');
+const Category = require('../models/Category');
+
+// const Category = require('mongoose').model('Category');
+// const Product = require('mongoose').model('Product');
 const url = require('url');
 const fs = require('fs');
 const path = require('path');
 const qs = require('querystring');
-const database = require('../config/database');
 const multiparty = require('multiparty');
 const shortid = require('shortid');
-
 
 module.exports = (req, res) => {
     //req.pathname = req.pathname || url.parse(req.url).pathname
@@ -25,12 +28,24 @@ module.exports = (req, res) => {
                 return;
             }
 
-            res.writeHead(200, {
-                'Content-Type': 'text/html'
-            })
+            Category.find().then((categories) => {
 
-            res.write(data);
-            res.end();
+                let replacement = '<select class="input-field" name="category">';
+
+                for (let category of categories) {
+                    replacement += `<option value="${category._id}">${category.name}</option>`
+                }
+                replacement += '</select>';
+
+                let html = data.toString().replace('{categories}', replacement);
+
+                res.writeHead(200, {
+                    'Content-Type': 'text/html'
+                });
+
+                res.write(html);
+                res.end();
+            })
         })
 
     } else if (req.pathname === '/product/add' && req.method === 'POST') {
@@ -80,13 +95,20 @@ module.exports = (req, res) => {
             }
         });
         form.on('close', () => {
-            database.products.add(product);
+            Product.create(product).then((insertedProduct)=> {
+                console.log(insertedProduct);
+                Category.findById(product.category).then(category => {
+                    console.log(category)
+                    category.products.push(insertedProduct._id);
+                    console.log(category)
+                    category.save();
 
-            res.writeHead(302, {
-                Location: '/'
-            });
-
-            res.end()
+                    res.writeHead(302, {
+                        Location: '/'
+                    });
+                    res.end()
+                })
+            })
         });
 
         form.parse(req)
