@@ -1,0 +1,19 @@
+<h1 class="head-title">Welcome to ShopStop!</h1>
+<form id="search-form">
+    <input type="text" name="query" placeholder="Search..." />
+    <input type="submit" value="Search" />
+</form>
+
+<div class="cards">
+    {{#each products}}
+    <div class="product-card">
+        <img class="product-img" src="{{image}}" alt="Product">
+        <h2>{{name}}</h2>
+        <p>{{description}}</p>
+          <a class=" btn btn-small btn-success" href="/products/buy/{{id}}">Buy</a>   
+          <a class=" btn btn-small btn-warning" href="/products/edit/{{id}}">Edit</a>
+          <a class=" btn btn-small btn-danger" href="/products/delete/{{id}}">Delete</a>
+          <a class=" btn btn-small btn-primary" href="/category/{{category.name}}/products">More {{category.name}}</a>
+    </div>
+    {{/each}}
+</div>

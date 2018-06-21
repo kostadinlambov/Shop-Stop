@@ -1,0 +1,13 @@
+<h2> All {{category.name}}</h2>
+<div class="cards">
+    {{#each category.products}}
+    <div class="product-card">
+        <img class="product-img" src="{{image}}" alt="Product">
+        <h2>{{name}}</h2>
+        <p>{{description}}</p>
+        <a class=" btn btn-small btn-success" href="/products/buy/{{id}}">Buy</a>
+        <a class=" btn btn-small btn-warning" href="/products/edit/{{id}}">Edit</a>
+        <a class=" btn btn-small btn-danger" href="/products/delete/{{id}}">Delete</a>
+    </div>
+    {{/each}}
+</div>

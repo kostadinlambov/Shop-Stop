@@ -1,28 +1,18 @@
-const http = require('http');
-const handlers = require('./handlers');
-const url = require('url')
-const port = process.env.PORT || 3000;
+const controller = require('./controllers');
 
-let environment = process.env.NODE_ENV || 'development';
+
+const port = process.env.PORT || 3000;
 const config = require('./config/config');
 const database = require('./config/database.config');
+const express = require('express');
+
+let app = express();
+let environment = process.env.NODE_ENV || 'development';
 
 database(config[environment]);
-/**
- *
- * @param {http.ClientRequest} req
- * @param {http.ClientResponse} res
- */
-http.createServer((req, res) => {
-    req.pathname = req.pathname || url.parse(req.url).pathname;
+require('./config/express')(app, config[environment])
+require('./config/routes')(app)
+require('./config/passport')()
 
-    for (let handler of handlers) {
-        if (handler(req, res) !== true) {
-            break;
-        }
-    }
-
-}).listen(port);
-
-console.log(`Listening on port ${port}`);
+app.listen(port, () => console.log(`Express is running on port ${port}...`));
 

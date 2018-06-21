@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 mongoose.Promise = global.Promise;
 
 module.exports = (config) => {
@@ -16,7 +16,7 @@ module.exports = (config) => {
 
     require('../models/Product');
     require('../models/Category');
-
+    require('../models/User').seedAdminUser();
 
     database.on('error', (err) =>{
         console.log(err)

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ShopStop</title>
+  <link rel="icon" type="image/x-icon" href="/content/images/favicon.ico">
+  <link rel="stylesheet" type="text/css" href="/content/styles/site.css">
+</head>
+
+<body>
+  <header>
+    <nav class="nav">
+      <ul>
+        <li>
+          <a href="/">Home Page</a>
+        </li>
+        <li>
+          <a href="/products/add">Add Product</a>
+        </li>
+        <li>
+          <a href="/category/add">Add Category</a>
+        </li>
+        <li class="delimeter"></li>
+        {{#if currentUser}}
+        <li class="align-right">
+          <form id="logout-form" action="/users/logout" method="POST"></form>
+          <a href="javascript:document.getElementById('logout-form').submit()">Logout</a>
+        </li>
+         <li class="align-right">
+          <span>Welcome, {{currentUser.username}}!</span>
+        </li>
+        {{else}}
+        <li class="align-right">
+          <a href="/users/register">Register</a>
+        </li>
+        <li class="align-right">
+          <a href="/users/login">Login</a>
+        </li>
+        {{/if}}
+      </ul>
+    </nav>
+  </header>
+  <main>
+    {{#if error}}
+    <h2 class="error-msg">{{error}}</h2>
+    {{else}}
+    <h2 class="success-msg">{{success}}</h2>
+    {{/if}} {{{body}}}
+  </main>
+  <footer>
+    <p>&copy;ShopStop</p>
+  </footer>
+</body>
+
+</html>
